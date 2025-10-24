@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnimeBoom Art</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Estilos para el modal de imágenes */
+        #image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        #modal-image {
+            max-width: 80%;
+            max-height: 80%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Música de fondo -->
+    <audio id="background-music" loop>
+        <source src="css/js/img/music/musica_pr.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <!-- Botón para pausar/reproducir el audio -->
+    <button id="toggle-music-button" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; background: #ff9900; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        🎵 Pausar música
+    </button>
+
+    <!-- Modal para ampliar imágenes -->
+    <div id="image-modal">
+        <span class="close-modal">&times;</span>
+        <img id="modal-image">
+    </div>
+
+    <header>
+        <h1>Hola bienvenidos a nuestro sitio de dibujos</h1>
+    </header>
+
+    <main>
+        <div class="gallery" id="gallery">
+            <!-- Dibujos destacados -->
+            <div class="drawing-card">
+                <img src="css/js/img/Rimuru Tempest.jpg" alt="Rimuru Tempest">
+                <h3>Rimuru Tempest</h3>
+                <p>$10.00</p>
+                <button class="buy-button" onclick="alert('¡Si en verdad lo quieres comprar, escríbeme a mi WhatsApp!')">Comprar</button>
+            </div>
+            <div class="drawing-card">
+                <img src="css/js/img/kakashi.jpg" alt="Kakashi">
+                <h3>Kakashi</h3>
+                <p>$10.00</p>
+                <button class="buy-button" onclick="alert('¡El botón de compra solo es para animación! Si en verdad lo quieres comprar, escríbeme a mi WhatsApp.')">Comprar</button>
+            </div>
+            <div class="drawing-card">
+                <img src="css/js/img/Satoru Gojō.jpg" alt="Satoru Gojō">
+                <h3>Satoru Gojō</h3>
+                <p>$10.00</p>
+                <button class="buy-button" onclick="alert('¡Si en verdad lo quieres comprar, escríbeme a mi WhatsApp!')">Comprar</button>
+            </div>
+            <!-- Espacios vacíos para futuros dibujos -->
+            <div class="drawing-card empty-card">
+                <p>Agregar dibujo</p>
+            </div>
+            <div class="drawing-card empty-card">
+                <p>Agregar dibujo</p>
+            </div>
+            <div class="drawing-card empty-card">
+                <p>Agregar dibujo</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Autor y Líder del grupo: Juan Josué Rivera Sánchez</p>
+        <p>
+            <a href="https://wa.me/50374190541" target="_blank">
+                <img src="css/js/img/whapp.jpeg" alt="WhatsApp" style="width: 24px; vertical-align: middle;">
+                +503 74190541
+            </a>
+        </p>
+        <p>Dirección: Cantón El Volcán, caserío El Aseituno</p>
+        <p>Escríbeme a mi WhatsApp para la entrega</p>
+        <p>Otros miembros del equipo:</p>
+        <p>2. Lincy Yorleth Guevara Larin</p>
+        <p>3. Anderson Eduardo Mejía Díaz</p>
+        <p>4. Paola Lisbeth Lazo Cruz</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Reproducir música automáticamente al cargar la página
+            const music = document.getElementById('background-music');
+            const toggleButton = document.getElementById('toggle-music-button');
+            let isPlaying = false;
+
+            // Intentar reproducir la música automáticamente
+            function playMusic() {
+                music.volume = 0.5;
+                music.play().then(() => {
+                    isPlaying = true;
+                    toggleButton.textContent = "🎵 Pausar música";
+                }).catch(error => {
+                    console.log("Error al reproducir música automáticamente:", error);
+                    toggleButton.textContent = "🎵 Reproducir música";
+                    isPlaying = false;
+                });
+            }
+
+            // Reproducir música al cargar la página
+            playMusic();
+
+            // Botón para pausar/reproducir música
+            toggleButton.addEventListener('click', function() {
+                if (isPlaying) {
+                    music.pause();
+                    toggleButton.textContent = "🎵 Reproducir música";
+                } else {
+                    music.play().then(() => {
+                        toggleButton.textContent = "🎵 Pausar música";
+                    }).catch(error => {
+                        console.log("Error al reproducir música:", error);
+                    });
+                }
+                isPlaying = !isPlaying;
+            });
+
+            // Modal para ampliar imágenes
+            const modal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            const closeModal = document.querySelector('.close-modal');
+            const drawingCards = document.querySelectorAll('.drawing-card img');
+
+            // Abrir modal al hacer clic en una imagen
+            drawingCards.forEach(img => {
+                img.addEventListener('click', function() {
+                    modal.style.display = 'flex';
+                    modalImage.src = this.src;
+                });
+            });
+
+            // Cerrar modal al hacer clic en la X
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+
+            // Cerrar modal al hacer clic fuera de la imagen
+            modal.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
